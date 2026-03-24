@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life at Myer's — Myer's College</title>
+  <meta name="description" content="Explore Life at Myer's College — Schools, Houses, Clubs, Student Council, Events and more." />
+  <link rel="icon" href="assets/images/myers-logo.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+
+    /* ── PAGE NAV ANCHORS ── */
+    .life-nav {
+      position: sticky;
+      top: 72px;
+      z-index: 100;
+      background: rgba(74,14,14,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196,151,58,0.25);
+      padding: 0;
+      box-shadow: 0 4px 20px rgba(74,14,14,0.50), 0 1px 0 rgba(196,151,58,0.20);
+    }
+    .life-nav-inner {
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 0;
+      padding: 4px 12px;
+    }
+    .life-nav-inner::-webkit-scrollbar { display: none; }
+    .life-nav-btn {
+      flex-shrink: 0;
+      padding: 14px 20px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.60);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+      position: relative;
+      margin: 0 2px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .life-nav-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--maroon-light), var(--gold));
+      transform: translateX(-50%);
+      transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(196,151,58,0.35);
+    }
+    .life-nav-btn:hover {
+      color: rgba(255,255,255,0.90);
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+    }
+    .life-nav-btn:hover::after {
+      width: 70%;
+      box-shadow: 0 0 12px rgba(196,151,58,0.6);
+    }
+    .life-nav-btn.active {
+      color: var(--gold);
+      background: rgba(196,151,58,0.10);
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .life-nav-btn.active::after {
+      width: 85%;
+      box-shadow: 0 0 16px rgba(196,151,58,0.8);
+    }
+
+    /* ── SECTION ANCHOR OFFSET ── */
+    .anchor-target { scroll-margin-top: 120px; }
+
+    /* ── SCHOOLS TIMELINE ── */
+    .school-timeline { position: relative; }
+    .school-timeline::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold), rgba(196,151,58,0.10));
+    }
+    .school-item {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 48px;
+      position: relative;
+    }
+    .school-item:last-child { margin-bottom: 0; }
+    .school-node {
+      flex-shrink: 0;
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: var(--black);
+      border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1;
+    }
+    .school-node span {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--gold);
+    }
+    .school-content {
+      flex: 1;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 28px 28px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .school-content:hover {
+      box-shadow: var(--elevated-shadow);
+      border-color: rgba(196,151,58,0.22);
+    }
+    .school-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 50px;
+      margin-bottom: 12px;
+    }
+
+    /* ── HOUSES GRID ── */
+    .house-card {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 30px 26px;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .house-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .house-card:hover { transform: translateY(-5px); box-shadow: var(--elevated-shadow); }
+    .house-c1::before { background: linear-gradient(90deg,#C4973A,#D9AE5A); }
+    .house-c2::before { background: linear-gradient(90deg,#8B1A1A,#C42B2B); }
+    .house-c3::before { background: linear-gradient(90deg,#8B1A1A,#C42B2B); }
+    .house-c4::before { background: linear-gradient(90deg,#8B1A1A,#C42B2B); }
+    .house-c5::before { background: linear-gradient(90deg,#A82020,#C42B2B); }
+    .house-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; font-size: 1.4rem;
+    }
+    .house-c1 .house-icon-wrap { background: rgba(196,151,58,0.10); color: #C4973A; }
+    .house-c2 .house-icon-wrap { background: rgba(139,26,26,0.10); color: #8B1A1A; }
+    .house-c3 .house-icon-wrap { background: rgba(139,26,26,0.10); color: #8B1A1A; }
+    .house-c4 .house-icon-wrap { background: rgba(107,20,20,0.10); color: #8B1A1A; }
+    .house-c5 .house-icon-wrap { background: rgba(139,26,26,0.10); color: #A82020; }
+    .house-meta-row {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+    .person-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--cream); border-radius: 50px;
+      padding: 4px 11px; font-size: 0.72rem;
+      color: var(--text-dark); font-weight: 600;
+    }
+
+    /* ── CLUBS GRID ── */
+    .club-card {
+      background: var(--black);
+      border: 1px solid rgba(196,151,58,0.14);
+      border-radius: 18px;
+      padding: 28px 24px;
+      height: 100%;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .club-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(196,151,58,0.06);
+      transform: translate(30%, 30%);
+    }
+    .club-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(196,151,58,0.35);
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.4);
+    }
+    .club-icon {
+      width: 50px; height: 50px; border-radius: 14px;
+      background: rgba(196,151,58,0.12);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    /* ── PROCLAMATION BANNER ── */
+    .proc-banner {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.954) 20%, rgba(37, 7, 7, 0.941) 80%);
+      border-radius: 24px;
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(196,151,58,0.20);
+    }
+    .proc-banner::before {
+      content: '\201C';
+      position: absolute;
+      top: -20px; left: 24px;
+      font-family: var(--font-heading);
+      font-size: 14rem;
+      line-height: 1;
+      color: rgba(75, 58, 24, 0.06);
+      pointer-events: none;
+    }
+    .proc-banner::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(115, 89, 37, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── STUDENT COUNCIL ── */
+    .council-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .council-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--gold), var(--gold-light));
+      border-radius: 0 0 0 0;
+    }
+
+    /* ── POLICIES LIST ── */
+    .policy-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      margin-bottom: 10px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .policy-item:hover { border-color: rgba(196,151,58,0.28); box-shadow: var(--card-shadow); }
+    .policy-dot {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg,rgba(196,151,58,0.14),rgba(196,151,58,0.05));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── NEWS CARDS ── */
+    .news-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      height: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .news-card:hover { transform: translateY(-5px); box-shadow: var(--elevated-shadow); }
+    .news-img-wrap {
+      width: 100%; aspect-ratio: 16/10; overflow: hidden;
+      background: var(--cream);
+    }
+    .news-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .news-card:hover .news-img-wrap img { transform: scale(1.06); }
+    .news-body { padding: 22px 22px 24px; }
+    .news-tag {
+      display: inline-block;
+      background: rgba(196,151,58,0.10);
+      color: var(--gold);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 10px;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .life-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196,151,58,0.22), transparent);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="topbar">
+    <div class="container"><div class="d-flex justify-content-between align-items-center"><div class="d-flex gap-4"><span class="d-flex align-items-center gap-2"><i class="bi bi-telephone-fill topbar-icon"></i> +92-543-541610</span><span class="d-flex align-items-center gap-2"><i class="bi bi-envelope-fill topbar-icon"></i> principal@myers.edu.pk</span></div><span class="d-none d-md-inline" style="color:rgba(255,255,255,0.50);font-size:0.75rem;letter-spacing:0.1em;">Welcome to Myer's College — Cambridge Affiliated</span></div></div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg site-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/images/myers-logo.png" alt="Myer's College Logo" height="48" width="48" style="object-fit:contain;" /><div class="d-none d-sm-block"><span class="brand-name">Myer's</span><span class="brand-suffix"> College</span></div></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="siteNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">HOME</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">PROFILE</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">ABOUT US</a></li>
+          <li class="nav-item"><a class="nav-link" href="faculty.html">FACULTY</a></li>
+          <li class="nav-item"><a class="nav-link" href="academics.html">ACADEMICS</a></li>
+          <li class="nav-item"><a class="nav-link" href="facilities.html">FACILITIES</a></li>
+          <li class="nav-item"><a class="nav-link" href="admissions.html">ADMISSIONS</a></li>
+          <li class="nav-item"><a class="nav-link" href="guidance.html">GUIDANCE</a></li>
+          <li class="nav-item"><a class="nav-link active" href="life.html">LIFE AT MYERS</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero" style="padding-bottom:80px;">
+    <h1 class="page-hero-title">Life at Myer's</h1>
+    <p class="page-hero-subtitle">Where every student finds their place — a community that inspires, challenges and celebrates</p>
+    <div class="page-hero-divider"></div>
+  </div>
+
+  <!-- STICKY SECTION NAV -->
+  <div class="life-nav">
+    <div class="container px-0">
+      <div class="life-nav-inner">
+        <button class="life-nav-btn active" data-target="schools">Schools</button>
+        <button class="life-nav-btn" data-target="houses">Houses</button>
+        <button class="life-nav-btn" data-target="clubs">Clubs &amp; Societies</button>
+        <button class="life-nav-btn" data-target="proclamation">Proclamation</button>
+        <button class="life-nav-btn" data-target="council">Student Council</button>
+        <button class="life-nav-btn" data-target="policies">Student Policies</button>
+        <button class="life-nav-btn" data-target="events">News &amp; Events</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SCHOOLS ═══════════ -->
+  <section id="schools" class="anchor-target section-padding">
+    <div class="container" style="max-width:860px;">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Academic Structure</p>
+        <h2 class="fw-bold" style="font-family:var(--font-heading);font-size:2.4rem;">Schools at Myer's College</h2>
+        <div class="gold-line mx-auto mt-3 mb-4"></div>
+        <p class="text-muted" style="font-size:0.95rem;line-height:1.8;max-width:580px;margin:0 auto;">Myer's College comprises four distinct schools, each designed to nurture students at the right stage of their academic and personal journey.</p>
+      </div>
+      <div class="reveal school-timeline">
+
+        <div class="school-item">
+          <div class="school-node"><span>1</span></div>
+          <div class="school-content">
+            <span class="school-badge" style="background:rgba(139,26,26,0.08);color:#A82020;border:1px solid rgba(107,20,20,0.08);"><i class="bi bi-stars"></i> Pre School</span>
+            <h3 class="fw-bold mb-3" style="font-family:var(--font-heading);font-size:1.3rem;">Pre School</h3>
+            <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.85;">At Myer's, this school is the most basic and it grooms and nurtures around 300 cute kids with dreams beautiful and goals well-chosen. This is exactly the place where toddlers with first few fumbling steps are ultimately transmuted into confident children who aspire to excel. In this school, they learn to dream and then master the art of actualizing dreams bit by bit. Moreover, they look at colourful pictures, watch exciting movies, flip through books, share smiles and even crack jokes to feel cool, positive and ecstatic. Myerian educators make every effort possible to help these young learners with drawing, communication, reading, writing, games and even meals. No doubt, Myer's is their second home — at Myer's, your child's future is in very safe hands.</p>
+          </div>
+        </div>
+
+        <div class="school-item">
+          <div class="school-node"><span>2</span></div>
+          <div class="school-content">
+            <span class="school-badge" style="background:rgba(139,26,26,0.08);color:#8B1A1A;border:1px solid rgba(107,20,20,0.08);"><i class="bi bi-people-fill"></i> Junior School</span>
+            <h3 class="fw-bold mb-3" style="font-family:var(--font-heading);font-size:1.3rem;">Junior School</h3>
+            <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.85;">This school is level two for the students where they go from grade one to grade four in a step-by-step manner. This is generally the time when young learners have already learnt how to exercise the four fundamental skills and are all set to step ahead to discover new avenues. At this stage, we make sure that our young students grow in self-belief, master new skills, actively take part in sports as well as other co-curricular competitions and start thinking in an analytical way. At Myer's, we have the best professionals to help these enthusiastic children sail across the sea of challenges with a high degree of success. Our junior school is widely known for excellent academic as well as co-curricular activities.</p>
+          </div>
+        </div>
+
+        <div class="school-item">
+          <div class="school-node"><span>3</span></div>
+          <div class="school-content">
+            <span class="school-badge" style="background:rgba(139,26,26,0.08);color:#8B1A1A;border:1px solid rgba(107,20,20,0.08);"><i class="bi bi-book-fill"></i> Preparatory School</span>
+            <h3 class="fw-bold mb-3" style="font-family:var(--font-heading);font-size:1.3rem;">Preparatory School</h3>
+            <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.85;">This is the third academic tier at Myer's with lots of pivotal importance. This is exactly when small children become teens, realize their responsibilities and plan in an impeccable fashion to eventually become excellent O Level students. Here in this school, there are regular opportunities for learners to be good at imagination, analysis, observation and innovation — a big leap in the right direction because all these crucial elements come in handy at the next stage. The higher the tier, the stronger the bond between teachers and learners. Preparatory school students, being more mature and competitive, make the most of their three-year stay at this level. Our preparatory school has done very well over the years and we aim to excel even more.</p>
+          </div>
+        </div>
+
+        <div class="school-item">
+          <div class="school-node"><span>4</span></div>
+          <div class="school-content">
+            <span class="school-badge" style="background:rgba(196,151,58,0.08);color:#C4973A;border:1px solid rgba(196,151,58,0.10);"><i class="bi bi-building"></i> Senior School</span>
+            <h3 class="fw-bold mb-3" style="font-family:var(--font-heading);font-size:1.3rem;">Senior School</h3>
+            <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.85;">Our senior school comprises O Levels and A Levels and is the most competitive, challenging and dynamic school. It offers some really fantastic opportunities to young learners with a view to refining their creative skills, enhancing their capacity and upgrading the knowledge they have gained. It is where ambitious children blossom into very prudent grown-ups and make an effort to create a world of their own. With every new step, they become brilliant learners, super athletes, creative artists and hard-to-beat competitors. Senior school is simply second to none when it comes to personality development. Our O/A Level students are taken care of in the best way possible and helped to conquer the invincible heights.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ HOUSES ═══════════ -->
+  <section id="houses" class="anchor-target section-padding section-cream">
+    <div class="container">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Community &amp; Identity</p>
+        <h2 class="fw-bold" style="font-family:var(--font-heading);font-size:2.4rem;">Houses of Myer's College</h2>
+        <div class="gold-line mx-auto mt-3 mb-4"></div>
+        <p class="text-muted" style="font-size:0.95rem;line-height:1.8;max-width:580px;margin:0 auto;">Each house is named after a great figure from the history of Chakwal — instilling pride, heritage and a spirit of friendly competition in every student.</p>
+      </div>
+
+      <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal house-card house-c1">
+            <div class="house-icon-wrap"><i class="bi bi-shield-fill"></i></div>
+            <h3 class="fw-bold mb-2" style="font-family:var(--font-heading);font-size:1.15rem;">Chaudhary Chaku House</h3>
+            <p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.75;">Named after Chaudhary Chaku Khan, the Founder of Chakwal. Chakwal was founded in 1530, shortly after Mughal Emperor Zaheer ud Deen Babur annexed the area of Dhanni. Chaku, Murid and Karhan were all sons of Raja Sidhar who founded these villages and named them after his sons.</p>
+            <div class="house-meta-row">
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Mr. Syed Kazim Mehdi Naqvi</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Sadia Raj</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Farah Noureen</span>
+              <span class="person-chip" style="background:rgba(196,151,58,0.08);"><i class="bi bi-star-fill" style="color:#C4973A;font-size:0.65rem;"></i> Ammar Ahmed Hassan</span>
+              <span class="person-chip" style="background:rgba(196,151,58,0.08);"><i class="bi bi-star-fill" style="color:#C4973A;font-size:0.65rem;"></i> Zainab Ali Baba</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal house-card house-c2">
+            <div class="house-icon-wrap"><i class="bi bi-award-fill"></i></div>
+            <h3 class="fw-bold mb-2" style="font-family:var(--font-heading);font-size:1.15rem;">Raja Aurangzeb House</h3>
+            <p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.75;">Named after Khan Bahadur Raja Aurangzeb Khan (E.A.C.), the first Chakwalian to become an officer in British Civil Services in 1891. He was instrumental in developing the colonies on the Chenab, and the city of Lyallpur was established due to his efforts. He was conferred the hereditary title of "Raja Sahib" by the Viceroy.</p>
+            <div class="house-meta-row">
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Mr. Shahid Imran</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Madiha Batool</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Saria Irum</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Saqib Abbas</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Zainab Jaisha Malik</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal house-card house-c3">
+            <div class="house-icon-wrap"><i class="bi bi-building-fill"></i></div>
+            <h3 class="fw-bold mb-2" style="font-family:var(--font-heading);font-size:1.15rem;">Khan Sarfaraz House</h3>
+            <p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.75;">Named after Raja Sarfaraz Ali Khan, the first MLA from Chakwal. He had great concern for education in the area — patronizing schools and giving generous scholarships throughout his life. His biggest contribution was the establishment of Government College in 1949, for which he donated 100,000 rupees and 112 kanals of prime land.</p>
+            <div class="house-meta-row">
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Mr. Muhammad Ali Kausar</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Dr. Munazza Sadia</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Fariha Batool</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Abdul Moiz</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Hania Hussain</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal house-card house-c4">
+            <div class="house-icon-wrap"><i class="bi bi-stars"></i></div>
+            <h3 class="fw-bold mb-2" style="font-family:var(--font-heading);font-size:1.15rem;">General Akbar House</h3>
+            <p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.75;">Named after Pakistan Army General Muhammad Akbar Khan (O.B.E.), the first Muslim and first Chakwali to become a General in the Royal Indian Army and later the Pakistan Army. General Akbar was awarded the 'Order of the British Empire' for his bravery and exceptional service in the Second World War.</p>
+            <div class="house-meta-row">
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Mr. Imran Shakoor</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Fakhra</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Sadia Iqbal</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Hadi Hussain</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#8B1A1A;font-size:0.65rem;"></i> Warda Imran</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal house-card house-c5">
+            <div class="house-icon-wrap"><i class="bi bi-gem"></i></div>
+            <h3 class="fw-bold mb-2" style="font-family:var(--font-heading);font-size:1.15rem;">Rashid Minhas House</h3>
+            <p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.75;">Named after Pilot Officer Rashid Minhas Shaheed (N.H.), the only officer in Pakistan Air Force decorated with the highest military honour in Pakistan — the Nishan-e-Haider — due to his extraordinary valour and sacrifice in the 1971 war. A true symbol of courage and patriotism.</p>
+            <div class="house-meta-row">
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Mr. Ahsan Mumtaz</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Lubna Husnain</span>
+              <span class="person-chip"><i class="bi bi-person-fill" style="color:var(--maroon);font-size:0.7rem;"></i> Ms. Saima Banaras</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#A82020;font-size:0.65rem;"></i> Muhammad Usman</span>
+              <span class="person-chip" style="background:rgba(139,26,26,0.08);"><i class="bi bi-star-fill" style="color:#A82020;font-size:0.65rem;"></i> Maheer-e-Sehar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- House legend -->
+        <div class="col-md-6 col-lg-4 d-flex align-items-center">
+          <div class="reveal w-100" style="background:rgba(255,255,255,0.07);border-radius:20px;padding:28px 24px;border:1px solid rgba(255,255,255,0.12);">
+            <p class="gold-text fw-semibold text-uppercase mb-3" style="letter-spacing:0.15em;font-size:0.72rem;">House System</p>
+            <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.8;margin-bottom:16px;">The house system fosters a spirit of healthy competition, teamwork and pride. Every student belongs to a house from their first day — competing in sports, academics and co-curricular events throughout the year.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span style="background:rgba(196,151,58,0.12);border:1px solid rgba(196,151,58,0.10);color:#D9AE5A;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;">Chaudhary Chaku</span>
+              <span style="background:rgba(107,20,20,0.10);border:1px solid rgba(107,20,20,0.25);color:#8B1A1A;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;">Raja Aurangzeb</span>
+              <span style="background:rgba(139,26,26,0.12);border:1px solid rgba(107,20,20,0.08);color:#C42B2B;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;">Khan Sarfaraz</span>
+              <span style="background:rgba(139,26,26,0.12);border:1px solid rgba(107,20,20,0.08);color:#C42B2B;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;">Gen. Akbar</span>
+              <span style="background:rgba(139,26,26,0.12);border:1px solid rgba(107,20,20,0.10);color:#C42B2B;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;">Rashid Minhas</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ CLUBS & SOCIETIES ═══════════ -->
+  <section id="clubs" class="anchor-target section-padding section-maroon">
+    <div class="container">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Beyond the Classroom</p>
+        <h2 class="fw-bold text-white" style="font-family:var(--font-heading);font-size:2.4rem;">Clubs &amp; Societies</h2>
+        <div class="gold-line mx-auto mt-3 mb-4"></div>
+        <p style="color:rgba(255,255,255,0.58);font-size:0.95rem;line-height:1.8;max-width:580px;margin:0 auto;">Myer's College offers a vibrant range of clubs and societies to help every student discover their passion, build skills, and connect with like-minded peers.</p>
+      </div>
+      <div class="row g-4">
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-book-half" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Literary Society</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A platform for students to promote literacy and critical thinking and foster a love of reading — providing fun in an engaging way through storytelling, writing competitions and book discussions.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-camera-reels-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Drama Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A creative outlet for students to build confidence in public speaking and performance skills — encouraging teamwork and collaboration through theatre productions, improvisation and stage presentations.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-tree-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Environmental Society</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A society to raise awareness among students about environmental issues and encourage them to take action to protect their planet through awareness campaigns, clean-up drives and sustainability projects.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-code-slash" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Coding Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A club to introduce students to the world of computer science and programming — enhancing their creativity and problem-solving skills through hands-on projects, hackathons and app building challenges.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-trophy-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Sports Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A range of physical activities helping students improve their fitness levels and coordination. It also teaches vital life skills such as teamwork, leadership and sportsmanship across cricket, football, swimming and more.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-palette-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Art Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A club vital to nurturing creativity, imagination, visual literacy and critical thinking. It helps students promote cultural awareness and showcase their artistic talents through exhibitions, murals and collaborative projects.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-chat-quote-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Debating Society</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">Sharpening minds through structured debate — students build argumentation, research and public speaking skills while engaging with real-world topics in inter-school tournaments and internal competitions.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-lightning-charge-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Science Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">Igniting curiosity through experiments, science fairs and olympiad preparation. The club bridges the gap between classroom theory and real-world science, encouraging students to question, explore and innovate.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="reveal club-card">
+            <div class="club-icon"><i class="bi bi-heart-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
+            <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Community Services Club</h3>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">Building empathy and social responsibility through outreach, charity drives and community engagement. Students contribute meaningfully to the wider Chakwal community while developing leadership and compassion.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ PROCLAMATION ═══════════ -->
+  <section id="proclamation" class="anchor-target section-padding">
+    <div class="container" style="max-width:860px;">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Our Heritage</p>
+        <h2 class="fw-bold" style="font-family:var(--font-heading);font-size:2.4rem;">Proclamation</h2>
+        <div class="gold-line mx-auto mt-3"></div>
+      </div>
+      <div class="reveal proc-banner">
+        <div class="position-relative" style="z-index:1;">
+          <p class="gold-text fw-semibold text-uppercase mb-4" style="letter-spacing:0.15em;font-size:0.75rem;">Myer's College — The Epitome of Excellence</p>
+          <p style="color:rgba(255,255,255,0.82);font-size:1.02rem;line-height:2;margin-bottom:24px;">
+            <strong style="color:var(--gold);">Whereas,</strong> Myer's College has been a pillar of education and academic excellence since its inception in 1999, and <strong style="color:var(--gold);">Whereas,</strong> Myer's College has consistently demonstrated its commitment to fast intellectual growth, personal development, and the pursuit of knowledge; and <strong style="color:var(--gold);">Whereas,</strong> Myer's College has played a pivotal role in shaping the lives of countless students, equipping them with the skills, values, and confidence necessary to thrive in their chosen fields, <strong style="color:var(--gold);">Whereas,</strong> Myer's College encourages the broad community of educationists, teachers, researchers, and philosophers to be active driving forces for education, research, and personal growth.
+          </p>
+          <p style="color:rgba(196,151,58,0.90);font-style:italic;font-size:1rem;line-height:1.8;margin-bottom:0;">
+            May the bequest of Myer's College continue to inspire future generations and shape a brighter future for all!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ STUDENT COUNCIL ═══════════ -->
+  <section id="council" class="anchor-target section-padding section-cream">
+    <div class="container" style="max-width:900px;">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Student Leadership</p>
+        <h2 class="fw-bold" style="font-family:var(--font-heading);font-size:2.4rem;">Student Council</h2>
+        <div class="gold-line mx-auto mt-3"></div>
+      </div>
+
+      <div class="reveal row g-4 align-items-stretch">
+        <div class="col-lg-8">
+          <div class="council-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(196,151,58,0.14),rgba(196,151,58,0.06));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="bi bi-people-fill" style="color:var(--gold);font-size:1.3rem;"></i>
+              </div>
+              <div>
+                <h3 class="fw-bold mb-0" style="font-family:var(--font-heading);font-size:1.3rem;">Welcome to the Student Council</h3>
+                <p class="text-muted mb-0" style="font-size:0.8rem;">Myer's College</p>
+              </div>
+            </div>
+            <p class="text-muted mb-3" style="font-size:0.9rem;line-height:1.85;">The Student Council is a vital part of the vibrant and inclusive community at Myer's College. Comprising a diverse group of passionate and dedicated student leaders, we strive to enhance the overall student experience and ensure that every voice is heard.</p>
+            <p class="text-muted mb-3" style="font-size:0.9rem;line-height:1.85;">Our primary goal is to represent the interests and concerns of the student body. We act as a liaison between students, faculty, and the administration, advocating for positive change and working towards creating a supportive and engaging learning environment for all. Through open communication channels, we encourage students to share their ideas, suggestions, and feedback.</p>
+            <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.85;">The Student Council organizes and supports a wide range of events and activities throughout the academic year — from cultural festivals, academic seminars, and sports tournaments to social gatherings and community service projects.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="h-100 d-flex flex-column gap-3">
+            <div style="background:rgba(255,255,255,0.07);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.12);flex:1;">
+              <i class="bi bi-megaphone-fill" style="color:var(--gold);font-size:1.5rem;margin-bottom:12px;display:block;"></i>
+              <h5 class="text-dark fw-bold mb-2" style="font-family:var(--font-heading);">Advocacy</h5>
+              <p style="color:rgba(52, 52, 52, 0.868);font-size:0.82rem;line-height:1.7;margin:0;">Representing student voices to faculty and administration for positive campus change.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.12);flex:1;">
+              <i class="bi bi-calendar-event-fill" style="color:var(--gold);font-size:1.5rem;margin-bottom:12px;display:block;"></i>
+              <h5 class="text-dark fw-bold mb-2" style="font-family:var(--font-heading);">Events</h5>
+              <p style="color:rgba(52, 52, 52, 0.868);font-size:0.82rem;line-height:1.7;margin:0;">Organising cultural festivals, seminars, sports tournaments and community service drives.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.12);flex:1;">
+              <i class="bi bi-person-lines-fill" style="color:var(--gold);font-size:1.5rem;margin-bottom:12px;display:block;"></i>
+              <h5 class="text-dark fw-bold mb-2" style="font-family:var(--font-heading);">Leadership</h5>
+              <p style="color:rgba(52, 52, 52, 0.868);font-size:0.82rem;line-height:1.7;margin:0;">Developing the next generation of responsible, empathetic and impactful leaders.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ STUDENT POLICIES ═══════════ -->
+  <section id="policies" class="anchor-target section-padding">
+    <div class="container" style="max-width:860px;">
+      <div class="reveal text-center mb-5">
+        <p class="maroon-text fw-semibold text-uppercase" style="letter-spacing:0.2em;font-size:0.82rem;">Rules &amp; Standards</p>
+        <h2 class="fw-bold" style="font-family:var(--font-heading);font-size:2.4rem;">Student Policies</h2>
+        <div class="gold-line mx-auto mt-3 mb-4"></div>
+        <p class="text-muted" style="font-size:0.95rem;line-height:1.8;max-width:600px;margin:0 auto;">Myer's College has a comprehensive set of student policies aimed at fostering a conducive learning environment for every student.</p>
+      </div>
+      <div class="reveal">
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-pencil-fill" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Academic Integrity</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">The institution upholds a strict academic integrity policy, emphasizing the importance of honest work and prohibiting plagiarism or cheating in any form.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-people-fill" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Respectful &amp; Inclusive Behaviour</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">Students are encouraged to participate in respectful and inclusive behaviour, promoting a culture of diversity and tolerance throughout the campus community.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-shield-check" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Zero Tolerance Policy</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">The college maintains a zero-tolerance policy towards discrimination, harassment, or any form of bullying — ensuring every student feels safe and valued.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-building-fill-lock" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Campus Safety &amp; Security</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">Clear guidelines for campus security have been established, including visitor registration and emergency protocols to ensure the safety of all students and staff.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-heart-pulse-fill" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Student Well-being</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">Myer's College recognises the significance of student well-being and provides support services for mental health and counselling to every student who needs it.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-laptop-fill" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Responsible Technology Use</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">The college maintains guidelines for responsible use of technology and the internet, highlighting the importance of ethical digital conduct both on and off campus.</p></div>
+        </div>
+        <div class="policy-item">
+          <div class="policy-dot"><i class="bi bi-star-fill" style="color:var(--gold);font-size:0.85rem;"></i></div>
+          <div><p class="fw-semibold mb-1" style="font-size:0.95rem;">Community Engagement</p><p class="text-muted mb-0" style="font-size:0.87rem;line-height:1.7;">Myer's College encourages students to actively engage in the college community and take advantage of available resources, fostering a sense of belonging and personal growth.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="life-divider"></div>
+
+  <!-- ═══════════ NEWS & EVENTS ═══════════ -->
+  <section id="events" class="anchor-target section-padding section-maroon">
+    <div class="container">
+      <div class="reveal text-center mb-5">
+        <div class="section-badge section-badge-navy"><i class="bi bi-newspaper"></i> Latest Updates</div>
+        <h2 class="fw-bold text-white" style="font-family:var(--font-heading);font-size:2.4rem;">News &amp; Events</h2>
+        <div class="gold-line mx-auto mt-3 mb-4"></div>
+        <p style="color:rgba(255,255,255,0.58);font-size:0.95rem;line-height:1.8;max-width:600px;margin:0 auto;">Stay up to date with the latest happenings, achievements and milestones at Myer's College.</p>
+      </div>
+
+      <!-- Featured milestone -->
+      <div class="reveal mb-5">
+        <div style="background:rgba(196,151,58,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:20px;padding:32px 36px;">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-8">
+              <span class="news-tag" style="background:rgba(196,151,58,0.14);">Milestone</span>
+              <h3 class="text-white fw-bold mb-3" style="font-family:var(--font-heading);font-size:1.5rem;">25 Glorious Years — Founder's Day Celebrations</h3>
+              <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;line-height:1.8;margin-bottom:0;">Myer's College celebrated its remarkable 25th Founder's Day, graced by Major General (Retd) Muhammad Akram Sahi, Chairman Athletic Federation of Pakistan. Achievers in academics, co-curricular activities, sports and swimming were honoured with well-deserved prizes. A true celebration of 25 years of excellence.</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <div style="background:rgba(196,151,58,0.10);border:1px solid rgba(255,255,255,0.14);border-radius:16px;padding:24px;">
+                <div style="font-family:var(--font-heading);font-size:3rem;font-weight:800;color:var(--gold);line-height:1;">25</div>
+                <div style="color:rgba(255,255,255,0.58);font-size:0.8rem;margin-top:6px;letter-spacing:0.1em;text-transform:uppercase;">Years of Excellence</div>
+                <div style="color:rgba(255,255,255,0.38);font-size:0.75rem;margin-top:4px;">Since 1999</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News grid -->
+      <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg2.jpg" alt="Laiba Tahir Presidential Scholarship" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">Scholarship</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Presidential Scholarship — Colorado University</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Laiba Tahir earned the prestigious Presidential Scholarship at Colorado University, USA — showcasing the school's commitment to nurturing academic excellence at the highest level.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg4.jpg" alt="Ali Arshad Brandeis Scholarship" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">100% Scholarship</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Wien International Scholar — Brandeis University</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Ali Arshad secured a 100% scholarship at Brandeis University, USA as the 19th Pakistani Wien International Scholar — a milestone that reflects Myer's unwavering commitment to global excellence.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg3.jpg" alt="Malaika Tahir Colorado" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">International</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">University of Colorado Boulder — BS Computer Science</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Malaika Tahir, gold medalist and Commonwealth essay champion, accepted to University of Colorado Boulder for BS Computer Science — a testament to her all-round brilliance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg1.jpg" alt="Zain Whittier College" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">70% Scholarship</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Whittier College, USA — 70% Scholarship</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Zain ul Abidin, Myer's Gold Medal winner and Commonwealth Essay silver medallist, accepted to Whittier College with a whopping 70% scholarship.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/ev3.jpg" alt="Oxford Summer Programme" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">Oxford Programme</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Eshal Farooqi — Oxford Summer Programme</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Eshal Zainab Farooqi was selected for the prestigious Oxford Summer Programme — the only student from Chakwal to achieve this honour, reflecting Myer's global academic reach.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/eventimg1.jpg" alt="Cambridge Examiner" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">Faculty Achievement</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">First Cambridge A-Level Examiner from Chakwal</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Mr. Imran Shakoor, with over 22 years of experience, officially became a Cambridge A-Level Chemistry (9701) Examiner — the first Cambridge examiner from Chakwal, a landmark achievement for Myer's.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg5.jpg" alt="Climate Change Challenge" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">Environment</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Burjeel Climate Change Challenge — Winners</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Myer's students triumphed in the Burjeel Climate Change Challenge, earning appreciation certificates for their outstanding efforts in environmental stewardship and sustainability.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap" style="background:var(--cream);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.myers.edu.pk/img/events/ev1.png" alt="Cambridge University Scholarships" loading="lazy" style="object-fit:contain;padding:12px;" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">Global Recognition</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">Cambridge, Oxford &amp; Barnard College Scholarships</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Eshal Zainab Farooqi and Muhammad Touseeq Fiaz, members of Myer's Literary Society, were granted scholarships for pre-university programmes at Cambridge, Oxford, Sydney, Barnard and Columbia.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="reveal news-card">
+            <div class="news-img-wrap">
+              <img src="https://www.myers.edu.pk/img/events/neimg8.jpg" alt="British Council Visit" loading="lazy" />
+            </div>
+            <div class="news-body">
+              <span class="news-tag">British Council</span>
+              <h4 class="fw-bold mb-2" style="font-size:1rem;font-family:var(--font-heading);">British Council Country Exams Director Visit</h4>
+              <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0;">Ms. Amanda Ingram, British Council's Country Exams Director Pakistan, visited Myer's College's CAIE exam venue, assessed all facilities and shared her positive feedback with Principal Ms. Noreen Bahadur.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- External links strip -->
+      <div class="reveal mt-5">
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px 28px;">
+          <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+              <p class="text-white fw-semibold mb-1" style="font-size:0.95rem;">More resources from Myer's</p>
+              <p style="color:rgba(255,255,255,0.44);font-size:0.82rem;margin:0;">Access the magazine, newsletter and student handbook directly.</p>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                <a href="magazine.html" style="background:rgba(196,151,58,0.10);border:1px solid rgba(196,151,58,0.22);color:var(--gold);border-radius:50px;padding:9px 18px;font-size:0.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-journal-richtext"></i> Magazine &amp; Yearbook</a>
+                <a href="newsletter.html" style="background:rgba(196,151,58,0.10);border:1px solid rgba(196,151,58,0.22);color:var(--gold);border-radius:50px;padding:9px 18px;font-size:0.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-envelope-paper-fill"></i> Newsletter</a>
+                <a href="assets/handbookmyers.pdf" target="_blank" rel="noopener" style="background:rgba(196,151,58,0.10);border:1px solid rgba(196,151,58,0.22);color:var(--gold);border-radius:50px;padding:9px 18px;font-size:0.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="bi bi-file-earmark-pdf-fill"></i> Student Handbook</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer pt-5 pb-0">
+    <div class="container py-4">
+      <div class="row g-5">
+        <div class="col-md-6 col-lg-3"><div class="d-flex align-items-center gap-2 mb-3"><img src="assets/images/myers-logo.png" alt="Myer's College" height="44" width="44" style="object-fit:contain;" /><div><span class="gradient-text" style="font-family:var(--font-heading);font-size:1.1rem;font-weight:700;">Myer's</span><span style="color:rgba(255,255,255,0.95);font-family:var(--font-heading);font-size:1.1rem;font-weight:700;"> College</span></div></div><p style="font-size:0.85rem;line-height:1.8;color:rgba(255,255,255,0.52);">A university-preparatory school affiliated with Cambridge International Examinations, providing quality education since 1999.</p><div class="d-flex gap-2 mt-3"><a href="#" class="footer-social"><i class="bi bi-facebook"></i></a><a href="#" class="footer-social"><i class="bi bi-instagram"></i></a><a href="#" class="footer-social"><i class="bi bi-youtube"></i></a></div></div>
+        <div class="col-md-6 col-lg-3"><h4 class="footer-heading mb-4">Quick Links</h4><ul class="list-unstyled mb-0" style="display:flex;flex-direction:column;gap:10px;"><li><a href="index.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> Home</a></li><li><a href="about.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> About Us</a></li><li><a href="academics.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> Academics</a></li><li><a href="admissions.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> Admissions</a></li><li><a href="guidance.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> Guidance &amp; Counseling</a></li><li><a href="contact.html" class="footer-link"><i class="bi bi-chevron-right" style="font-size:0.7rem;"></i> Contact Us</a></li></ul></div>
+        <div class="col-md-6 col-lg-3"><h4 class="footer-heading mb-4">Contact Info</h4><ul class="list-unstyled mb-0" style="display:flex;flex-direction:column;gap:16px;font-size:0.85rem;color:rgba(255,255,255,0.52);"><li class="d-flex align-items-start gap-3"><i class="bi bi-geo-alt-fill" style="color:var(--gold);margin-top:2px;flex-shrink:0;"></i>Myers College, Kot Sarfraz Khan, Chakwal-48800</li><li class="d-flex align-items-start gap-3"><i class="bi bi-telephone-fill" style="color:var(--gold);margin-top:2px;flex-shrink:0;"></i><div><p class="mb-1">+92-543-541610</p><p class="mb-0">+92-321-2960044</p></div></li><li class="d-flex align-items-start gap-3"><i class="bi bi-envelope-fill" style="color:var(--gold);margin-top:2px;flex-shrink:0;"></i><div><p class="mb-1">principal@myers.edu.pk</p><p class="mb-0">counselor@myers.edu.pk</p></div></li></ul></div>
+        <div class="col-md-6 col-lg-3"><h4 class="footer-heading mb-4">Stay Connected</h4><p style="font-size:0.85rem;color:rgba(255,255,255,0.52);">Subscribe to get updates on admissions, events and more.</p><form class="newsletter-form d-flex mt-3" onsubmit="return false;"><input type="email" class="form-control footer-input" placeholder="Your email" required /><button type="submit" class="btn-gold" style="border-radius:0 10px 10px 0;padding:10px 16px;">Subscribe</button></form></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2"><p class="mb-0">&copy; <span id="year"></span> Myer's College. All rights reserved.</p><p class="mb-0">Cambridge International Examinations — PK 035</p></div></div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Sticky nav: highlight active section
+    const sections = ['schools','houses','clubs','proclamation','council','policies','events'];
+    const navBtns = document.querySelectorAll('.life-nav-btn');
+
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navBtns.forEach(b => b.classList.remove('active'));
+          const active = document.querySelector(`.life-nav-btn[data-target="${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  </script>
+</body>
+</html>
