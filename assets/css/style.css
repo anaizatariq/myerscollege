@@ -328,7 +328,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
 }
 .stat-item:last-child { border-right: none; }
 .stat-item:hover { background: var(--cream); }
-.stat-icon { color: var(--gold); width: 28px; height: 28px; margin: 0 auto 8px; }
+.stat-icon { color: var(--maroon-mid); width: 28px; height: 28px; margin: 0 auto 8px; }
 .stat-value { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: var(--text-primary); }
 .stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-top: 4px; }
 
