@@ -140,53 +140,107 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
 /* ============================================================
    HERO — Deep black with strong maroon character
 ============================================================ */
-.hero-section { position: relative; min-height: 600px; overflow: hidden; }
+.hero-section { 
+  position: relative; 
+  min-height: 600px; 
+  overflow: hidden;
+}
+
 .hero-section img.hero-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
-  transform: scale(1.05);
+  transform: scale(1.0);
+  filter: brightness(1.02) contrast(1.12) saturate(1.08);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 .hero-overlay {
   position: absolute; inset: 0;
   background:
     linear-gradient(160deg,
-      rgba(10,10,10,0.94) 0%,
-      rgba(10,10,10,0.80) 40%,
-      rgba(74,14,14,0.75) 75%,
-      rgba(74,14,14,0.90) 100%
+      rgba(10, 10, 10, 0.235) 0%,
+      rgba(15, 14, 14, 0.297) 40%,
+      rgba(29, 23, 23, 0.445) 75%,
+      rgba(74, 14, 14, 0.071) 100%
     );
 }
 .hero-content {
   position: relative; z-index: 2;
-  min-height: 600px;
+  min-height: 620px;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  text-align: center; padding: 80px 20px;
+  text-align: center; padding: 100px 30px;
 }
 .hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(196,151,58,0.14);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(196,151,58,0.35);
-  border-radius: 50px; padding: 6px 18px;
-  margin-bottom: 24px; font-size: 0.7rem;
-  color: rgba(255,255,255,0.88);
-  text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(196,151,58,0.22);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(196,151,58,0.50);
+  border-radius: 50px; padding: 10px 24px;
+  margin-bottom: 32px; font-size: 0.72rem;
+  color: rgba(255,255,255,0.95);
+  text-transform: uppercase; letter-spacing: 0.18em; font-weight: 700;
   animation: fadeInUp 0.6s ease-out forwards;
+  box-shadow: 
+    0 12px 32px rgba(196,151,58,0.20),
+    0 4px 12px rgba(196,151,58,0.12),
+    inset 0 1px 2px rgba(255,255,255,0.15);
+  transition: all 0.3s ease;
+}
+.hero-badge:hover {
+  background: rgba(196,151,58,0.28);
+  box-shadow: 
+    0 16px 40px rgba(196,151,58,0.28),
+    0 6px 16px rgba(196,151,58,0.18),
+    inset 0 1px 2px rgba(255,255,255,0.20);
+  transform: translateY(-2px);
+}
+.hero-badge i {
+  font-size: 0.9rem;
+  filter: drop-shadow(0 2px 4px rgba(196,151,58,0.30));
 }
 .hero-title {
   font-family: var(--font-heading);
-  font-size: clamp(2.8rem,8vw,6rem);
-  font-weight: 700; color: #fff;
-  line-height: 1.1; margin-bottom: 20px;
-  animation: fadeInUp 0.6s ease-out 0.1s forwards; opacity: 0;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 0.95;
+  margin-bottom: 20px;
+  letter-spacing: -0.045em;
+  animation: fadeInUp 0.8s ease-out 0.08s forwards;
+  opacity: 0;
+}
+.hero-title .gradient-text {
+  color: #e12a2a;
+  font-weight: 900;
+  /* text-shadow: 
+    0 4px 12px rgba(230, 60, 60, 0.40),
+    0 2px 6px rgba(230, 60, 60, 0.30),
+    0 0px 2px rgba(0,0,0,0.15); */
+  letter-spacing: -0.045em;
 }
 .hero-subtitle {
-  font-size: 1.1rem; color: rgba(255,255,255,0.68);
-  max-width: 560px; line-height: 1.75; margin-bottom: 36px;
-  animation: fadeInUp 0.6s ease-out 0.2s forwards; opacity: 0;
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.95);
+  max-width: 680px;
+  line-height: 1.95;
+  margin-bottom: 70px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-shadow: 
+    0 3px 8px rgba(0,0,0,0.38),
+    0 1px 3px rgba(0,0,0,0.20);
+  animation: fadeInUp 0.8s ease-out 0.18s forwards;
+  opacity: 0;
 }
-.hero-buttons { animation: fadeInUp 0.6s ease-out 0.4s forwards; opacity: 0; }
+.hero-buttons { 
+  animation: fadeInUp 0.8s ease-out 0.32s forwards; 
+  opacity: 0; 
+  gap: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 /* ============================================================
    PAGE HERO (inner pages) — Deep Maroon
@@ -264,35 +318,96 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
 ============================================================ */
 /* Primary button — maroon solid */
 .btn-gold {
-  background: var(--maroon-mid);
-  color: #fff; font-weight: 600;
-  border-radius: 8px; padding: 13px 30px;
+  background: linear-gradient(135deg, #C42B2B 0%, #E63C3C 50%, #C42B2B 100%);
+  color: #fff; font-weight: 700;
+  border-radius: 8px; padding: 16px 44px;
   border: none;
-  transition: all 0.25s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   font-family: var(--font-body); font-size: 0.95rem;
-  display: inline-flex; align-items: center; gap: 8px;
-  text-decoration: none; letter-spacing: 0.02em;
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; letter-spacing: 0.05em;
+  box-shadow: 
+    0 18px 48px rgba(196, 43, 43, 0.42),
+    0 8px 20px rgba(196, 43, 43, 0.26),
+    0 2px 4px rgba(0,0,0,0.12);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.btn-gold::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .btn-gold:hover {
-  background: var(--maroon-vivid);
-  color: #fff; transform: translateY(-2px);
-  box-shadow: var(--shadow-maroon);
+  background: linear-gradient(135deg, #D63D3D 0%, #F04A4A 50%, #D63D3D 100%);
+  color: #fff; 
+  transform: translateY(-6px);
+  box-shadow: 
+    0 26px 64px rgba(196, 43, 43, 0.52),
+    0 12px 28px rgba(196, 43, 43, 0.36),
+    0 3px 8px rgba(0,0,0,0.16);
+}
+.btn-gold:hover::before {
+  opacity: 1;
+}
+.btn-gold:active {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 32px rgba(196, 43, 43, 0.36),
+    0 6px 16px rgba(196, 43, 43, 0.20);
 }
 /* Outline button — on dark backgrounds */
 .btn-outline-gold {
-  background: transparent;
-  color: rgba(255,255,255,0.88);
-  font-weight: 600; border-radius: 8px; padding: 13px 30px;
-  border: 1.5px solid rgba(255,255,255,0.30);
-  transition: all 0.25s ease;
-  font-family: var(--font-body); font-size: 0.95rem;
-  display: inline-flex; align-items: center; gap: 8px;
-  text-decoration: none; letter-spacing: 0.02em;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.97);
+  font-weight: 700; border-radius: 8px; padding: 15px 40px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: var(--font-body); font-size: 0.93rem;
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; letter-spacing: 0.04em;
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-weight: 600;
+  box-shadow: 
+    0 12px 32px rgba(255,255,255,0.12),
+    0 4px 12px rgba(255,255,255,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.btn-outline-gold::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .btn-outline-gold:hover {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.60);
-  color: #fff; transform: translateY(-2px);
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.65);
+  color: #fff; 
+  transform: translateY(-5px);
+  box-shadow: 
+    0 20px 48px rgba(255,255,255,0.18),
+    0 8px 24px rgba(255,255,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+}
+.btn-outline-gold:hover::before {
+  opacity: 1;
+}
+.btn-outline-gold:active {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 24px rgba(255,255,255,0.12),
+    0 4px 12px rgba(255,255,255,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.20);
 }
 /* Gold button — selective use only */
 .btn-gold-accent {
@@ -431,10 +546,10 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
 }
 
 /* ── Gradient text ── */
-.gradient-text {
-  background: linear-gradient(135deg, var(--maroon-mid) 0%, var(--maroon-vivid) 50%, var(--maroon-mid) 100%);
+/* .gradient-text {
+  background: linear-gradient(135deg, var(--maroon-light) 0%, var(--maroon-vivid) 50%, var(--maroon-mid) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
+} */
 .gradient-text-gold {
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
