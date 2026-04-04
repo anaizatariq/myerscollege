@@ -314,6 +314,100 @@
       background: linear-gradient(90deg, transparent, rgba(196,151,58,0.22), transparent);
       margin: 0;
     }
+
+    /* ── DRAMA PHOTO STACK ── */
+    .drama-stack-imgs {
+      position: relative;
+      height: 56px;
+      margin-bottom: 4px;
+    }
+    .drama-stack-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid rgba(196,151,58,0.30);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .drama-stack:hover .drama-stack-img {
+      border-color: rgba(196,151,58,0.60);
+    }
+    .drama-stack:hover .drama-stack-img:nth-child(1) { transform:rotate(0deg) scale(1.08); }
+    .drama-stack:hover .drama-stack-img:nth-child(2) { left:48px; transform:rotate(0deg) scale(1.08); }
+    .drama-stack:hover .drama-stack-img:nth-child(3) { left:96px; transform:rotate(0deg) scale(1.08); }
+    .drama-stack:hover .drama-stack-img:nth-child(4) { left:144px; transform:rotate(0deg) scale(1.08); }
+
+    /* ── DRAMA LIGHTBOX ── */
+    .drama-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .drama-lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .drama-lightbox-img {
+      max-width: 85vw;
+      max-height: 80vh;
+      border-radius: 16px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.60), 0 0 40px rgba(196,151,58,0.10);
+      object-fit: contain;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    }
+    .drama-lightbox.active .drama-lightbox-img {
+      transform: scale(1);
+    }
+    .drama-lb-close {
+      position: absolute;
+      top: 24px; right: 28px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .drama-lb-close:hover { background: rgba(255,255,255,0.18); transform: rotate(90deg); }
+    .drama-lb-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .drama-lb-nav:hover { background: rgba(196,151,58,0.20); border-color: rgba(196,151,58,0.40); }
+    .drama-lb-prev { left: 24px; }
+    .drama-lb-next { right: 24px; }
+    .drama-lb-counter {
+      position: absolute;
+      bottom: 28px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.45);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
   </style>
 </head>
 <body>
@@ -546,10 +640,23 @@
         </div>
 
         <div class="col-sm-6 col-lg-4">
-          <div class="reveal club-card">
+          <div class="reveal club-card" style="position:relative;">
             <div class="club-icon"><i class="bi bi-camera-reels-fill" style="color:var(--gold);font-size:1.3rem;"></i></div>
             <h3 class="fw-bold text-white mb-2" style="font-size:1.05rem;font-family:var(--font-heading);">Drama Club</h3>
-            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:0;">A creative outlet for students to build confidence in public speaking and performance skills — encouraging teamwork and collaboration through theatre productions, improvisation and stage presentations.</p>
+            <p style="color:rgba(255,255,255,0.52);font-size:0.87rem;line-height:1.75;margin-bottom:16px;">A creative outlet for students to build confidence in public speaking and performance skills — encouraging teamwork and collaboration through theatre productions.</p>
+            <!-- Photo stack preview -->
+            <div class="drama-stack" onclick="openDramaGallery()" style="cursor:pointer;">
+              <div class="drama-stack-imgs">
+                <img src="assets/images/drama club/drama-5.jpeg" alt="Drama" class="drama-stack-img" style="z-index:5;transform:rotate(-4deg);" />
+                <img src="assets/images/drama club/drama-3.jpeg" alt="Drama" class="drama-stack-img" style="z-index:4;left:40px;transform:rotate(2deg);" />
+                <img src="assets/images/drama club/drama-1.jpeg" alt="Drama" class="drama-stack-img" style="z-index:3;left:80px;transform:rotate(-1deg);" />
+                <img src="assets/images/drama club/drama-2.jpeg" alt="Drama" class="drama-stack-img" style="z-index:2;left:120px;transform:rotate(3deg);" />
+              </div>
+              <div class="d-flex align-items-center gap-2 mt-2" style="padding-left:2px;">
+                <i class="bi bi-images" style="color:var(--gold);font-size:0.75rem;"></i>
+                <span style="color:var(--gold);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">View 5 Photos</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -948,6 +1055,66 @@
     sections.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
+    });
+  </script>
+
+  <!-- DRAMA LIGHTBOX OVERLAY -->
+  <div class="drama-lightbox" id="dramaLightbox">
+    <div class="drama-lb-close" onclick="closeDramaGallery()"><i class="bi bi-x-lg"></i></div>
+    <div class="drama-lb-nav drama-lb-prev" onclick="navigateDrama(-1)"><i class="bi bi-chevron-left"></i></div>
+    <img class="drama-lightbox-img" id="dramaLbImg" src="" alt="Drama Club Photo" />
+    <div class="drama-lb-nav drama-lb-next" onclick="navigateDrama(1)"><i class="bi bi-chevron-right"></i></div>
+    <div class="drama-lb-counter" id="dramaLbCounter"></div>
+  </div>
+
+  <script>
+    // Drama Club Lightbox Gallery
+    const dramaImages = [
+      'assets/images/drama club/drama-5.jpeg',
+      'assets/images/drama club/drama-3.jpeg',
+      'assets/images/drama club/drama-1.jpeg',
+      'assets/images/drama club/drama-2.jpeg',
+      'assets/images/drama club/drama-4.jpeg'
+    ];
+    let dramaIdx = 0;
+
+    function openDramaGallery(idx) {
+      dramaIdx = idx || 0;
+      const lb = document.getElementById('dramaLightbox');
+      document.getElementById('dramaLbImg').src = dramaImages[dramaIdx];
+      document.getElementById('dramaLbCounter').textContent = (dramaIdx + 1) + ' / ' + dramaImages.length;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDramaGallery() {
+      document.getElementById('dramaLightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function navigateDrama(dir) {
+      dramaIdx = (dramaIdx + dir + dramaImages.length) % dramaImages.length;
+      const img = document.getElementById('dramaLbImg');
+      img.style.opacity = '0';
+      setTimeout(() => {
+        img.src = dramaImages[dramaIdx];
+        img.style.opacity = '1';
+        document.getElementById('dramaLbCounter').textContent = (dramaIdx + 1) + ' / ' + dramaImages.length;
+      }, 150);
+    }
+
+    // Keyboard nav
+    document.addEventListener('keydown', e => {
+      const lb = document.getElementById('dramaLightbox');
+      if (!lb.classList.contains('active')) return;
+      if (e.key === 'Escape') closeDramaGallery();
+      if (e.key === 'ArrowRight') navigateDrama(1);
+      if (e.key === 'ArrowLeft') navigateDrama(-1);
+    });
+
+    // Click backdrop to close
+    document.getElementById('dramaLightbox').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeDramaGallery();
     });
   </script>
 </body>
